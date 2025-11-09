@@ -3,12 +3,18 @@
     "next-dev-tools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "next-devtools-mcp@latest"]
+      "args": [
+        "-y",
+        "next-devtools-mcp@latest"
+      ]
     },
     "context7": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp@latest"]
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
     },
     "serena": {
       "command": "uvx",
@@ -25,6 +31,13 @@
     "ultracite": {
       "url": "https://www.ultracite.ai/api/mcp/mcp",
       "type": "http"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
     }
   },
   "inputs": []
