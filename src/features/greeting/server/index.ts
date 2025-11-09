@@ -1,0 +1,7 @@
+'use server'
+
+export { GreetingContainer } from '../ui/GreetingContainer'
+export { greetingServiceFactory } from '../model/factory'
+export type { GreetingServiceFactory } from '../model/factory'
+export { greetingApi } from '../api/hono-router'
+export type { GreetingApiType } from '../api/hono-router'
