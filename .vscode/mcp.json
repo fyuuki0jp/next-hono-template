@@ -3,18 +3,12 @@
     "next-dev-tools": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "next-devtools-mcp@latest"
-      ]
+      "args": ["-y", "next-devtools-mcp@latest"]
     },
     "context7": {
       "type": "stdio",
       "command": "npx",
-      "args": [
-        "-y",
-        "@upstash/context7-mcp@latest"
-      ]
+      "args": ["-y", "@upstash/context7-mcp@latest"]
     },
     "serena": {
       "command": "uvx",
@@ -34,10 +28,7 @@
     },
     "shadcn": {
       "command": "npx",
-      "args": [
-        "shadcn@latest",
-        "mcp"
-      ]
+      "args": ["shadcn@latest", "mcp"]
     }
   },
   "inputs": []

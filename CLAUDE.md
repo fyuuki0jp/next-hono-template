@@ -110,7 +110,7 @@ The database client (`src/shared/db/client.ts`) supports both PGlite (in-memory)
 
 Environment variables:
 - `DRIZZLE_USE_PGLITE`: `true`/`1` for PGlite, `false`/`0` for PostgreSQL
-- `PGLITE_DATA_PATH`: File path for PGlite data (default: `.local/pglite.dev.db`)
+- `PGLITE_DATA_PATH`: File path for PGlite data (default: `.devDatabase`)
 - `DATABASE_URL`: PostgreSQL connection string (required for Postgres mode)
 - `PG_MAX_CONNECTIONS`: Connection pool size (default: 10)
 - `PG_SSL`: Enable SSL for PostgreSQL (default: false)

@@ -1,5 +1,3 @@
-'use server'
-
 export { GreetingContainer } from '../ui/GreetingContainer'
 export { greetingServiceFactory } from '../model/factory'
 export type { GreetingServiceFactory } from '../model/factory'

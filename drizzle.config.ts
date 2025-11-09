@@ -13,7 +13,9 @@ const defaultUsePglite = !preferPostgres && !hasDatabaseUrl && nodeEnv !== 'prod
 const usePglite = preferPglite || defaultUsePglite
 
 if (!usePglite && !process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required when DRIZZLE_USE_PGLITE is disabled or NODE_ENV=production.')
+  throw new Error(
+    'DATABASE_URL is required when DRIZZLE_USE_PGLITE is disabled or NODE_ENV=production.'
+  )
 }
 
 const schemaPath = './src/shared/db/schema.ts'

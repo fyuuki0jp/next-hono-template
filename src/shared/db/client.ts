@@ -17,10 +17,12 @@ const defaultUsePglite = !preferPostgres && !hasDatabaseUrl && nodeEnv !== 'prod
 const usePglite = preferPglite || defaultUsePglite
 
 if (!usePglite && !process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is required when DRIZZLE_USE_PGLITE is disabled or NODE_ENV=production.')
+  throw new Error(
+    'DATABASE_URL is required when DRIZZLE_USE_PGLITE is disabled or NODE_ENV=production.'
+  )
 }
 
-const pglitePath = process.env.PGLITE_DATA_PATH ?? join(process.cwd(), '.local', 'pglite.dev.db')
+const pglitePath = process.env.PGLITE_DATA_PATH ?? join(process.cwd(),'.devDatabase')
 
 if (usePglite) {
   mkdirSync(dirname(pglitePath), { recursive: true })
@@ -34,9 +36,9 @@ const postgresClient = usePglite
       ssl: process.env.PG_SSL === 'true' || process.env.PG_SSL === '1'
     })
 
-const db = (usePglite
+const db = usePglite
   ? drizzlePgLite(pgliteClient!, { schema })
-  : drizzlePostgres(postgresClient!, { schema }))
+  : drizzlePostgres(postgresClient!, { schema })
 
 export type DbClient = typeof db
 
