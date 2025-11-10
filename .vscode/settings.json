@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "*.css":"tailwindcss"
+  },
   "chat.tools.terminal.autoApprove": {
     "cd": true,
     "echo": true,

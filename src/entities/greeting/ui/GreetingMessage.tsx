@@ -4,4 +4,6 @@ type GreetingMessageProps = {
   greeting: GreetingModel
 }
 
-export const GreetingMessage = ({ greeting }: GreetingMessageProps) => <p>{greeting.message}</p>
+export const GreetingMessage = ({ greeting }: GreetingMessageProps) => (
+  <p className="text-lg text-foreground">{greeting.message}</p>
+)

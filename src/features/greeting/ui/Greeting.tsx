@@ -3,6 +3,8 @@
 import { GreetingMessage } from '@/entities/greeting/ui/GreetingMessage'
 import type { GreetingModel } from '@/entities/greeting/model/greeting'
 import { useGreeting } from '../hook/useGreeting'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 type GreetingProps = {
   initialGreeting: GreetingModel
@@ -13,17 +15,20 @@ export const Greeting = ({ initialGreeting, apiBaseUrl }: GreetingProps) => {
   const { greeting, refresh, isPending } = useGreeting({ initialGreeting, apiBaseUrl })
 
   return (
-    <section className="space-y-4">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      {greeting ? <GreetingMessage greeting={greeting} /> : <p>Loading...</p>}
-      <button
-        type="button"
-        onClick={() => refresh()}
-        disabled={isPending}
-        className="rounded bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700 disabled:opacity-50"
-      >
-        {isPending ? '更新中...' : '再読み込み'}
-      </button>
-    </section>
+    <Card>
+      <CardHeader>
+        <CardTitle>Hello world!</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {greeting ? <GreetingMessage greeting={greeting} /> : <p className="text-muted-foreground">Loading...</p>}
+        <Button
+          onClick={() => refresh()}
+          disabled={isPending}
+          variant="default"
+        >
+          {isPending ? '更新中...' : '再読み込み'}
+        </Button>
+      </CardContent>
+    </Card>
   )
 }
