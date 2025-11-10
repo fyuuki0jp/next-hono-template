@@ -22,10 +22,6 @@
       ],
       "type": "stdio"
     },
-    "ultracite": {
-      "url": "https://www.ultracite.ai/api/mcp/mcp",
-      "type": "http"
-    },
     "shadcn": {
       "command": "npx",
       "args": ["shadcn@latest", "mcp"]
