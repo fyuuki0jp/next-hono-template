@@ -1,6 +1,6 @@
 ---
 description: 'Description of the custom chat mode.'
-tools: ['runCommands', 'next-dev-tools/*', 'context7/*', 'serena/*', 'problems', 'changes', 'testFailure', 'githubRepo', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todos']
+tools: ['edit', 'runCommands', 'chromedevtools/chrome-devtools-mcp/*', 'context7/*', 'next-dev-tools/*', 'serena/*', 'problems', 'changes', 'testFailure', 'githubRepo', 'todos']
 model: GPT-5-Codex (Preview) (copilot)
 ---
 

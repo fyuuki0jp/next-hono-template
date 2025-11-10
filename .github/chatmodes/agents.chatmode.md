@@ -1,6 +1,6 @@
 ---
 description: 'Description of the custom chat mode.'
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'next-dev-tools/nextjs_docs', 'context7/*', 'ultracite/*', 'shadcn/*', 'serena/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'ms-vscode.vscode-websearchforcopilot/websearch', 'extensions', 'todos']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'ultracite/*', 'context7/*', 'next-dev-tools/nextjs_docs', 'serena/*', 'shadcn/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
 model: GPT-5-Codex (Preview) (copilot)
 ---
 
