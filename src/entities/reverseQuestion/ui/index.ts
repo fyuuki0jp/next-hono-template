@@ -1,3 +1,3 @@
-import { ReverseQuestion } from "./Reversequestion"
+import { ReverseQuestion } from './Reversequestion'
 
 export { ReverseQuestion }

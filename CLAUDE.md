@@ -23,6 +23,12 @@ pnpm start               # Start production server
 pnpm lint                # Run ESLint
 pnpm format              # Format code with Prettier
 pnpm format:check        # Check formatting without writing
+pnpm typecheck           # Run TypeScript type checking
+
+# Testing
+pnpm test                # Run tests with Vitest
+pnpm test:ui             # Run tests with Vitest UI
+pnpm test:coverage       # Run tests with coverage report
 
 # Database Operations
 pnpm db:generate         # Generate migrations from schema
@@ -171,7 +177,97 @@ Environment variables:
 - This keeps client parsing simple and consistent
 - Validate all responses with entity parsers (see `entities/{entity}/model/`)
 
-## Testing & Seeding
+## Testing
+
+This project uses **Vitest** for unit and integration testing.
+
+### Test Structure
+
+Tests are co-located with source files using the `*.test.ts(x)` naming convention:
+
+```
+src/
+├── entities/greeting/model/
+│   ├── greeting.ts
+│   └── greeting.test.ts        # Entity/Parser tests
+├── features/greeting/
+│   ├── model/
+│   │   ├── service.ts
+│   │   └── service.test.ts     # Service layer tests
+│   └── api/
+│       ├── hono-router.ts
+│       └── hono-router.test.ts # API integration tests
+└── shared/utils/
+    └── client.test.ts
+```
+
+### Testing Strategies by Layer
+
+**Entity Layer (`entities/`):**
+- Test Zod schemas and parsers with boundary values
+- Example: `parseGreeting()`, `fromRow()`
+
+**Feature Service Layer (`features/{feature}/model/`):**
+- Mock repository dependencies using Vitest's `vi.fn()`
+- Test business logic in isolation
+- Example pattern:
+  ```typescript
+  const mockRepository = {
+    getLatest: vi.fn().mockResolvedValue(mockGreeting)
+  }
+  const service = createGreetingService(mockRepository)
+  ```
+
+**API Layer (`features/{feature}/api/`):**
+- Use Hono's `testClient` for integration testing
+- Mock Velona factories with `vi.mock()`
+- Example:
+  ```typescript
+  import { testClient } from 'hono/testing'
+  vi.mock('../model/factory', () => ({ greetingServiceFactory: vi.fn() }))
+  const client = testClient(greetingApi)
+  ```
+
+**React Hooks (`features/{feature}/hook/`):**
+- Use `@testing-library/react` for component testing
+- Mock API responses with MSW (Mock Service Worker)
+- Wrap tests in `QueryClientProvider` for React Query
+
+### Mocking with Velona DI
+
+For Velona-based factories, use the `inject()` method in integration tests:
+
+```typescript
+const mockRepository = { getLatest: vi.fn() }
+const service = await greetingServiceFactory.inject({
+  repository: () => Promise.resolve(mockRepository)
+})()
+```
+
+### Database Testing
+
+Tests use PGlite in-memory mode by default:
+- `DRIZZLE_USE_PGLITE=true` (set in `vitest.setup.ts`)
+- `PGLITE_DATA_PATH=memory://` for ephemeral test databases
+- No setup/teardown needed for unit tests that mock repositories
+
+### Running Tests
+
+```bash
+pnpm test              # Run all tests in watch mode
+pnpm test:ui           # Open Vitest UI in browser
+pnpm test:coverage     # Generate coverage report
+```
+
+### Coverage
+
+Coverage is configured to use the v8 provider and excludes:
+- `node_modules/`, `.next/`, build outputs
+- Type definition files (`*.d.ts`)
+- Config files (`*.config.*`)
+- Scripts and test files themselves
+
+## Database Seeding
 
 - Run `pnpm db:seed` after migrations to populate initial data
 - Seed script location: `scripts/seed.ts`

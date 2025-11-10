@@ -6,7 +6,6 @@ import { createHonoClient } from '@/shared/utils/client'
 import { Agents } from '@/features/agents'
 
 export default async function HomePage() {
-
   const client = await createHonoClient<ApiSchema>()
   const greetingApiUrl = client.api.hello.$url().toString()
   const agentsApiUrl = client.api.chat.$url().toString()

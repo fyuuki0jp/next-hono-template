@@ -22,7 +22,7 @@ if (!usePglite && !process.env.DATABASE_URL) {
   )
 }
 
-const pglitePath = process.env.PGLITE_DATA_PATH ?? join(process.cwd(),'.devDatabase')
+const pglitePath = process.env.PGLITE_DATA_PATH ?? join(process.cwd(), '.devDatabase')
 
 if (usePglite) {
   mkdirSync(dirname(pglitePath), { recursive: true })

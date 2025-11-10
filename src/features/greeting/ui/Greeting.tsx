@@ -20,12 +20,12 @@ export const Greeting = ({ initialGreeting, apiBaseUrl }: GreetingProps) => {
         <CardTitle>Hello world!</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {greeting ? <GreetingMessage greeting={greeting} /> : <p className="text-muted-foreground">Loading...</p>}
-        <Button
-          onClick={() => refresh()}
-          disabled={isPending}
-          variant="default"
-        >
+        {greeting ? (
+          <GreetingMessage greeting={greeting} />
+        ) : (
+          <p className="text-muted-foreground">Loading...</p>
+        )}
+        <Button onClick={() => refresh()} disabled={isPending} variant="default">
           {isPending ? '更新中...' : '再読み込み'}
         </Button>
       </CardContent>

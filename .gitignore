@@ -39,6 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Prevent accidental JS file commits from TypeScript compilation
+/src/**/*.js
+/src/**/*.js.map
 
 # local database file
 .devDatabase
+.test-database
