@@ -29,6 +29,12 @@ export const useGreeting = ({
     queryFn: async () => {
       const response = await contextualFetcher()
       const payload = await response.json()
+
+      // Handle error response
+      if ('error' in payload) {
+        throw new Error(payload.error)
+      }
+
       return parseGreeting(payload.greeting)
     },
     initialData: initialGreeting
