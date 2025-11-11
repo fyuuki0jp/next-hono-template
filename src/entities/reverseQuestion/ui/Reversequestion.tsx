@@ -1,8 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import type { ReverseQuestionOption } from '../model'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Card } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input'
 
 type QuestionType = 'text' | 'select'
 

@@ -3,8 +3,8 @@
 import { GreetingMessage } from '@/entities/greeting/ui/GreetingMessage'
 import type { GreetingModel } from '@/entities/greeting/model/greeting'
 import { useGreeting } from '../hook/useGreeting'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
 
 type GreetingProps = {
   initialGreeting: GreetingModel
