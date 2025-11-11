@@ -46,10 +46,13 @@ describe('entities/greeting/api/repository', () => {
         // Act: getLatest を呼び出す
         const result = await repository.getLatest()
 
-        // Assert: 正しい結果が返ることを確認
+        // Assert: 正しい結果が返ることを確認（Result型のok variant）
         expect(result).toEqual({
-          id: 42,
-          message: 'Latest greeting message'
+          ok: true,
+          value: {
+            id: 42,
+            message: 'Latest greeting message'
+          }
         })
 
         // クエリが正しく構築されたか確認
@@ -68,8 +71,17 @@ describe('entities/greeting/api/repository', () => {
 
         mockDb.select = mockSelect
 
-        // Act & Assert: エラーが発生することを確認
-        await expect(repository.getLatest()).rejects.toThrow('Greeting not found')
+        // Act: getLatest を呼び出す
+        const result = await repository.getLatest()
+
+        // Assert: Result型のerr variantが返されることを確認
+        expect(result).toEqual({
+          ok: false,
+          error: {
+            type: 'not_found',
+            message: 'Greeting not found'
+          }
+        })
       })
 
       it('データベースエラーをそのまま伝播する', async () => {
@@ -82,8 +94,18 @@ describe('entities/greeting/api/repository', () => {
 
         mockDb.select = mockSelect
 
-        // Act & Assert: DBエラーが伝播することを確認
-        await expect(repository.getLatest()).rejects.toThrow('Database connection error')
+        // Act: getLatest を呼び出す
+        const result = await repository.getLatest()
+
+        // Assert: Result型のerr variant（database_error）が返されることを確認
+        expect(result).toEqual({
+          ok: false,
+          error: {
+            type: 'database_error',
+            message: 'Failed to fetch greeting from database',
+            cause: dbError
+          }
+        })
       })
 
       it('fromRow で不正なデータの場合はエラーをスローする', async () => {
@@ -100,8 +122,19 @@ describe('entities/greeting/api/repository', () => {
 
         mockDb.select = mockSelect
 
-        // Act & Assert: Zodバリデーションエラーが発生する
-        await expect(repository.getLatest()).rejects.toThrow()
+        // Act: getLatest を呼び出す
+        const result = await repository.getLatest()
+
+        // Assert: Result型のerr variant（database_error with ZodError cause）が返されることを確認
+        expect(result.ok).toBe(false)
+        if (!result.ok) {
+          expect(result.error.type).toBe('database_error')
+          expect(result.error.message).toBe('Failed to fetch greeting from database')
+          // Type guard for database_error to access cause
+          if (result.error.type === 'database_error') {
+            expect(result.error.cause).toBeDefined()
+          }
+        }
       })
 
       it('複数のGreetingが存在する場合、最新の1件のみを返す', async () => {
@@ -121,10 +154,13 @@ describe('entities/greeting/api/repository', () => {
         // Act
         const result = await repository.getLatest()
 
-        // Assert: 最初の行が返される
+        // Assert: 最初の行が返される（Result型のok variant）
         expect(result).toEqual({
-          id: 100,
-          message: 'Newest'
+          ok: true,
+          value: {
+            id: 100,
+            message: 'Newest'
+          }
         })
 
         expect(mockLimit).toHaveBeenCalledWith(1)

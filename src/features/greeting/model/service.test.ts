@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createGreetingService, type GreetingService } from './service'
-import type { GreetingRepository } from '@/entities/greeting/api/repository'
+import type { GreetingRepository } from '../api/repository'
 import type { GreetingModel } from '@/entities/greeting/model/greeting'
+import { ok } from '@/shared/lib/result'
 
 describe('features/greeting/model/service', () => {
   describe('createGreetingService', () => {
@@ -13,7 +14,7 @@ describe('features/greeting/model/service', () => {
       }
 
       const mockRepository: GreetingRepository = {
-        getLatest: vi.fn().mockResolvedValue(mockGreeting)
+        getLatest: vi.fn().mockResolvedValue(ok(mockGreeting))
       }
 
       // Act: Serviceを作成してgetGreeting()を呼び出す
@@ -21,20 +22,28 @@ describe('features/greeting/model/service', () => {
       const result = await service.getGreeting()
 
       // Assert: 正しい結果が返り、repositoryが呼び出されたか確認
-      expect(result).toEqual(mockGreeting)
+      expect(result.ok).toBe(true)
+      if (result.ok) {
+        expect(result.value).toEqual(mockGreeting)
+      }
       expect(mockRepository.getLatest).toHaveBeenCalledOnce()
     })
 
-    it('repositoryがエラーをスローした場合、そのまま伝播する', async () => {
-      // Arrange: エラーをスローするRepositoryのモック
-      const mockError = new Error('Database connection failed')
+    it('repositoryがエラーを返した場合、そのまま伝播する', async () => {
+      // Arrange: エラーを返すRepositoryのモック
       const mockRepository: GreetingRepository = {
-        getLatest: vi.fn().mockRejectedValue(mockError)
+        getLatest: vi
+          .fn()
+          .mockResolvedValue({ ok: false, error: { type: 'not_found', message: 'Greeting not found' } })
       }
 
       // Act & Assert: エラーが伝播することを確認
       const service: GreetingService = createGreetingService(mockRepository)
-      await expect(service.getGreeting()).rejects.toThrow('Database connection failed')
+      const result = await service.getGreeting()
+      expect(result.ok).toBe(false)
+      if (!result.ok) {
+        expect(result.error.message).toBe('Greeting not found')
+      }
       expect(mockRepository.getLatest).toHaveBeenCalledOnce()
     })
 
@@ -44,17 +53,23 @@ describe('features/greeting/model/service', () => {
       const mockGreeting2: GreetingModel = { id: 2, message: 'Second call' }
 
       const mockRepository: GreetingRepository = {
-        getLatest: vi.fn().mockResolvedValueOnce(mockGreeting1).mockResolvedValueOnce(mockGreeting2)
+        getLatest: vi.fn().mockResolvedValueOnce(ok(mockGreeting1)).mockResolvedValueOnce(ok(mockGreeting2))
       }
 
       const service: GreetingService = createGreetingService(mockRepository)
 
       // Act & Assert
       const result1 = await service.getGreeting()
-      expect(result1).toEqual(mockGreeting1)
+      expect(result1.ok).toBe(true)
+      if (result1.ok) {
+        expect(result1.value).toEqual(mockGreeting1)
+      }
 
       const result2 = await service.getGreeting()
-      expect(result2).toEqual(mockGreeting2)
+      expect(result2.ok).toBe(true)
+      if (result2.ok) {
+        expect(result2.value).toEqual(mockGreeting2)
+      }
 
       expect(mockRepository.getLatest).toHaveBeenCalledTimes(2)
     })

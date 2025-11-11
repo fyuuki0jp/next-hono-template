@@ -6,9 +6,9 @@ import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport, UIMessage, lastAssistantMessageIsCompleteWithToolCalls } from 'ai'
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input'
 
 type AgentsProps = {
   apiBaseUrl: string

@@ -1,6 +1,6 @@
 import { depend } from 'velona'
 
-import { greetingRepositoryFactory } from '@/entities/greeting/api/factory'
+import { greetingRepositoryFactory } from './repository-factory'
 import { createGreetingService } from './service'
 
 export const greetingServiceFactory = depend(

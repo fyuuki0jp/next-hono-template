@@ -3,6 +3,7 @@ import { testClient } from 'hono/testing'
 import { greetingApi } from './hono-router'
 import { greetingServiceFactory } from '../model/factory'
 import type { GreetingModel } from '@/entities/greeting/model/greeting'
+import { ok, err } from '@/shared/lib/result'
 
 // Velona factory をモック
 vi.mock('../model/factory', () => ({
@@ -23,7 +24,7 @@ describe('features/greeting/api/hono-router', () => {
       }
 
       const mockService = {
-        getGreeting: vi.fn().mockResolvedValue(mockGreeting)
+        getGreeting: vi.fn().mockResolvedValue(ok(mockGreeting))
       }
 
       // greetingServiceFactory をモック
@@ -46,10 +47,12 @@ describe('features/greeting/api/hono-router', () => {
       expect(mockService.getGreeting).toHaveBeenCalledOnce()
     })
 
-    it('サービスがエラーをスローした場合、500エラーを返す', async () => {
-      // Arrange: エラーをスローするサービスのモック
+    it('サービスがエラーを返した場合、500エラーを返す', async () => {
+      // Arrange: エラーを返すサービスのモック
       const mockService = {
-        getGreeting: vi.fn().mockRejectedValue(new Error('Service error'))
+        getGreeting: vi
+          .fn()
+          .mockResolvedValue(err({ type: 'database_error', message: 'Database error' }))
       }
 
       vi.mocked(greetingServiceFactory).mockResolvedValue(mockService)
@@ -74,7 +77,7 @@ describe('features/greeting/api/hono-router', () => {
       }
 
       const mockService = {
-        getGreeting: vi.fn().mockResolvedValue(mockGreeting)
+        getGreeting: vi.fn().mockResolvedValue(ok(mockGreeting))
       }
 
       vi.mocked(greetingServiceFactory).mockResolvedValue(mockService)
@@ -84,7 +87,10 @@ describe('features/greeting/api/hono-router', () => {
 
       expect(response.status).toBe(200)
       const data = await response.json()
-      expect(data.greeting).toEqual(mockGreeting)
+      expect('greeting' in data).toBe(true)
+      if ('greeting' in data) {
+        expect(data.greeting).toEqual(mockGreeting)
+      }
     })
   })
 })
