@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { handleAgentChat } from './agent'
+import { createAgentService } from './agent'
 import type { UIMessage } from 'ai'
 import { streamText } from 'ai'
 
@@ -19,7 +19,7 @@ vi.mock('@ai-sdk/google', () => ({
 }))
 
 describe('features/agents/model/agent', () => {
-  describe('handleAgentChat', () => {
+  describe('createAgentService', () => {
     beforeEach(() => {
       vi.clearAllMocks()
     })
@@ -41,7 +41,8 @@ describe('features/agents/model/agent', () => {
       vi.mocked(streamText).mockReturnValue(mockStreamResult as any)
 
       // Act
-      const result = await handleAgentChat(messages)
+      const service = createAgentService()
+      const result = service.handleChat(messages)
 
       // Assert: streamTextが呼び出された
       expect(streamText).toHaveBeenCalledOnce()
@@ -92,7 +93,8 @@ describe('features/agents/model/agent', () => {
       vi.mocked(streamText).mockReturnValue(mockStreamResult as any)
 
       // Act
-      await handleAgentChat(messages)
+      const service = createAgentService()
+      service.handleChat(messages)
 
       // Assert: streamTextが呼び出された
       expect(streamText).toHaveBeenCalledOnce()
@@ -111,7 +113,8 @@ describe('features/agents/model/agent', () => {
       vi.mocked(streamText).mockReturnValue(mockStreamResult as any)
 
       // Act
-      await handleAgentChat(messages)
+      const service = createAgentService()
+      service.handleChat(messages)
 
       // Assert: エラーをスローせず正常に実行
       expect(streamText).toHaveBeenCalledOnce()
@@ -127,7 +130,8 @@ describe('features/agents/model/agent', () => {
       vi.mocked(streamText).mockReturnValue(mockStreamResult as any)
 
       // Act
-      await handleAgentChat(messages)
+      const service = createAgentService()
+      service.handleChat(messages)
 
       // Assert
       const callArgs = vi.mocked(streamText).mock.calls[0][0]
@@ -145,7 +149,8 @@ describe('features/agents/model/agent', () => {
       vi.mocked(streamText).mockReturnValue(mockStreamResult as any)
 
       // Act
-      await handleAgentChat(messages)
+      const service = createAgentService()
+      service.handleChat(messages)
 
       // Assert
       const callArgs = vi.mocked(streamText).mock.calls[0][0]
