@@ -1,13 +1,13 @@
 import { depend } from 'velona'
-import { hc } from 'hono/client'
 
 import type { GreetingApiType } from './hono-router'
+import { createApiClientSimple } from '@/shared/api/client'
 
 export type GreetingApiConfig = {
   baseUrl: string
 }
 
-type GreetingApiClient = ReturnType<typeof hc<GreetingApiType>>
+type GreetingApiClient = ReturnType<typeof createApiClientSimple<GreetingApiType>>
 
 type GreetingApiDependencies = {
   createClient: (config: GreetingApiConfig) => GreetingApiClient
@@ -27,7 +27,7 @@ export const greetingApiFetcherFactory = depend<
   GreetingApiFetchers
 >(
   {
-    createClient: ({ baseUrl }) => hc<GreetingApiType>(baseUrl)
+    createClient: ({ baseUrl }) => createApiClientSimple<GreetingApiType>(baseUrl)
   },
   ({ createClient }, config) => {
     const client = createClient(config)
